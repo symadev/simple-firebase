@@ -2,6 +2,7 @@
 import { GoogleAuthProvider, signOut } from "firebase/auth";
 import auth from "../../Firebase/Firebase";
 import { signInWithPopup } from "firebase/auth";
+import { GithubAuthProvider } from "firebase/auth";
 import { useState } from "react";
 
 
@@ -10,6 +11,9 @@ const Login = () => {
 
     const [user,setUser] = useState([]);
     const provider = new GoogleAuthProvider()
+    const githubProvider = new GithubAuthProvider();
+
+
     // এটি Firebase Authentication-এ Google Sign-In (গুগল লগইন) ব্যবহারের জন্য প্রয়োজন হয়।
     const handleGoogleSignIn = () => {
         signInWithPopup(auth, provider)
@@ -54,7 +58,23 @@ const handleGoogleSignout = () => {
            
         });
 };
-    
+
+
+const handleGithubSignIn = () => {
+    signInWithPopup(auth,  githubProvider)
+    //now its a callback like fetch
+    .then(result => {
+        console.log(result.user);
+        setUser(result.user);
+    })
+    .catch(error => {
+        console.error( error);
+        
+    });
+};
+
+
+
 
 
 //if user exists ? signin:signout
@@ -70,7 +90,12 @@ return (
                 user ?
                 <button onClick= {handleGoogleSignout}>Sign Out</button>:
                 //user jdi thake taile signout
+               <>
                  <button onClick= {handleGoogleSignIn}>Login</button>
+                 <br />
+                 <button onClick={handleGithubSignIn}>Login with Github</button>
+
+               </>
               
             }
 
