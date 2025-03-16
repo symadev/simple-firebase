@@ -1,14 +1,42 @@
-import { GoogleAuthProvider } from "firebase/auth/web-extension";
+// import { GoogleAuthProvider } from "firebase/auth/web-extension";
+import { GoogleAuthProvider } from "firebase/auth";
+import auth from "../../Firebase/Firebase";
+import { signInWithPopup } from "firebase/auth";
 
 
 const Login = () => {
 
     const provider = new GoogleAuthProvider()
     // এটি Firebase Authentication-এ Google Sign-In (গুগল লগইন) ব্যবহারের জন্য প্রয়োজন হয়।
-    const handleGoogleSignIn = ()=>{
-        console.log('google comming soon');
-    }
-    return (
+    const handleGoogleSignIn = () => {
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                console.log(result);
+            })
+            .catch((error) => {
+                console.error("Error signing in:", error);
+            });
+    };
+
+
+//     এই ফাংশন কেন দরকার?
+// 1️⃣ Google Sign-In ব্যবহারের জন্য
+// ➡️ Firebase-এর মাধ্যমে ইউজার যেন Google একাউন্ট দিয়ে সহজে লগইন করতে পারে।
+
+// 2️⃣ Promise Handling (Asynchronous Code)
+// ➡️ signInWithPopup() অ্যাসিনক্রোনাস মেথড, যা সার্ভারের সাথে যোগাযোগ করে। .then() দিয়ে সফল লগইন এবং .catch() দিয়ে ভুল হ্যান্ডল করা হয়।
+
+// 3️⃣ Error Handling
+// ➡️ লগইন ব্যর্থ হলে ইউজারকে সমস্যার কারণ জানানো যায়।
+
+// 4️⃣ ইউজারের তথ্য ব্যবস্থাপনা
+// ➡️ result অবজেক্ট থেকে ইউজারের ইমেইল, নাম, প্রোফাইল ছবি ইত্যাদি এক্সেস করা যায়।
+    
+
+
+
+
+return (
         <div>
             <button onClick= {handleGoogleSignIn}>Login With Google</button>
         </div>
